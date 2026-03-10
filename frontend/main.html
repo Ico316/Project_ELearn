@@ -3,403 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LaAcademy · Theme switch</title>
-  <!-- Fonts & base styles (embedded) -->
+  <title>LaAcademy - Advanced eLearning Platform</title>
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* ----- RESET / BASE (same aesthetic, now with theme variables) ----- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    /* theme variables – light & dark */
-    :root {
-      /* dark (default) */
-      --bg-primary: #0a0a1a;
-      --bg-secondary: rgba(10, 10, 26, 0.7);
-      --bg-card: rgba(255, 255, 255, 0.03);
-      --text-primary: #e0e0ff;
-      --text-secondary: #a0a0ff;
-      --accent: #00ff88;
-      --accent-glow: rgba(0, 255, 136, 0.3);
-      --border-color: rgba(0, 255, 136, 0.3);
-      --overlay-dark: rgba(0,0,0,0.7);
-      --scientific-base: radial-gradient(circle at 20% 30%, #1a1a3a, #0a0a1a);
-      --particle-color1: rgba(0, 255, 136, 0.1);
-      --particle-color2: rgba(0, 200, 255, 0.1);
-      --particle-color3: rgba(170, 0, 255, 0.1);
-    }
-
-    body.light-theme {
-      --bg-primary: #f0f4fa;
-      --bg-secondary: rgba(255, 255, 255, 0.8);
-      --bg-card: rgba(0, 20, 30, 0.03);
-      --text-primary: #12122e;
-      --text-secondary: #2d3a5e;
-      --accent: #0066cc;
-      --accent-glow: rgba(0, 102, 204, 0.3);
-      --border-color: rgba(0, 102, 204, 0.3);
-      --overlay-dark: rgba(255,255,255,0.7);
-      --scientific-base: radial-gradient(circle at 20% 30%, #cbd5e1, #e2e8f0);
-      --particle-color1: rgba(0, 102, 204, 0.1);
-      --particle-color2: rgba(0, 160, 200, 0.1);
-      --particle-color3: rgba(100, 0, 200, 0.1);
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
-      min-height: 100vh;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Scientific background adapts */
-    .scientific-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: var(--scientific-base);
-      overflow: hidden;
-    }
-
-    .particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        radial-gradient(circle at 10% 20%, var(--particle-color1) 1px, transparent 1px),
-        radial-gradient(circle at 30% 70%, var(--particle-color2) 1px, transparent 1px),
-        radial-gradient(circle at 80% 40%, var(--particle-color3) 1px, transparent 1px);
-      background-size: 100px 100px;
-      animation: particleFloat 20s linear infinite;
-    }
-
-    .grid-overlay {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(var(--border-color) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-      background-size: 50px 50px;
-      transform: perspective(500px) rotateX(60deg);
-      transform-origin: top;
-      opacity: 0.4;
-    }
-
-    @keyframes particleFloat {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(-100px) rotate(10deg); }
-    }
-
-    /* Main container */
-    .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    /* HEADER with theme switch */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 30px;
-      background: var(--bg-secondary);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      transition: background 0.3s;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
-    }
-
-    .logo svg circle, .logo svg path {
-      stroke: var(--accent);
-    }
-    .logo svg circle:last-child {
-      fill: var(--accent);
-    }
-
-    /* theme toggle button */
-    .theme-switch {
-      background: transparent;
-      border: 2px solid var(--border-color);
-      border-radius: 40px;
-      padding: 6px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      color: var(--accent);
-      font-weight: 600;
-      margin-right: 15px;
-      transition: 0.2s;
-    }
-    .theme-switch:hover {
-      background: var(--accent);
-      color: var(--bg-primary);
-      border-color: var(--accent);
-    }
-    .theme-switch svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-      fill: none;
-    }
-
-    .user-profile {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 8px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 40px;
-      background: rgba(0, 255, 136, 0.05);
-    }
-    .user-email {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-    .avatar svg circle, .avatar svg path {
-      stroke: var(--accent);
-    }
-
-    /* search */
-    .search-container {
-      flex: 1;
-      max-width: 500px;
-      position: relative;
-      margin: 0 30px;
-    }
-    .search-form {
-      display: flex;
-      gap: 10px;
-    }
-    .search-input {
-      flex: 1;
-      padding: 14px 20px;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid var(--border-color);
-      border-radius: 30px;
-      color: var(--text-primary);
-      outline: none;
-      transition: all 0.3s ease;
-    }
-    .search-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px var(--accent-glow);
-      background: rgba(0, 255, 136, 0.1);
-    }
-    .search-button {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(0, 255, 136, 0.2);
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .search-button:hover {
-      background: var(--accent);
-      color: #0a0a1a;
-      transform: scale(1.1);
-    }
-    .search-results {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      margin-top: 10px;
-      background: var(--bg-secondary);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      max-height: 300px;
-      overflow-y: auto;
-      display: none;
-      z-index: 1000;
-    }
-    .search-results.show { display: block; }
-    .search-results li {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-color);
-      cursor: pointer;
-      list-style: none;
-      color: var(--text-primary);
-    }
-    .search-results li:hover {
-      background: rgba(0, 255, 136, 0.1);
-    }
-    .highlight {
-      background: var(--accent-glow);
-      padding: 2px 4px;
-      border-radius: 4px;
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* content */
-    .content-wrapper {
-      display: flex;
-      gap: 30px;
-    }
-    .main-content { flex: 1; }
-    .section-title {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--accent-glow);
-      padding-left: 15px;
-      position: relative;
-    }
-    .section-title::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: linear-gradient(to bottom, var(--accent), #00aaff);
-      border-radius: 2px;
-    }
-    .featured-course {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      overflow: hidden;
-      display: flex;
-      transition: 0.3s;
-    }
-    .featured-course:hover {
-      border-color: var(--accent);
-      box-shadow: 0 10px 30px var(--accent-glow);
-    }
-    .course-thumbnail {
-      position: relative;
-      width: 300px;
-      height: 200px;
-      overflow: hidden;
-    }
-    .course-thumbnail img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .play-button svg circle { stroke: var(--accent); }
-    .play-button svg polygon { fill: var(--accent); }
-    .course-info { padding: 30px; }
-    .course-meta span {
-      padding: 5px 15px;
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-    }
-
-    /* video grid */
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 25px;
-    }
-    .video-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 15px;
-      overflow: hidden;
-      position: relative;
-      transition: 0.3s;
-    }
-    .video-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 10px 30px var(--accent-glow);
-    }
-    .video-thumbnail { height: 160px; overflow: hidden; }
-    .video-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-    .video-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, var(--overlay-dark), transparent);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: 0.3s;
-    }
-    .video-card:hover .video-overlay { opacity: 1; }
-    .video-duration {
-      position: absolute; bottom: 10px; right: 10px;
-      background: var(--overlay-dark); padding: 4px 8px; border-radius: 4px;
-      color: var(--accent);
-    }
-    .favorite-btn {
-      position: absolute; top: 10px; right: 10px; width: 35px; height: 35px;
-      border-radius: 50%; background: var(--overlay-dark);
-      border: 2px solid var(--accent); color: var(--accent); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 10; transition: 0.3s;
-    }
-    .favorite-btn.active, .favorite-btn:hover {
-      background: var(--accent); color: #0a0a1a;
-    }
-    .video-info { padding: 15px; }
-    .video-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); }
-
-    /* favorites sidebar */
-    .favorites-sidebar {
-      width: 300px;
-      background: var(--bg-secondary);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 20px;
-      height: fit-content;
-      position: sticky; top: 20px;
-    }
-    .favorites-sidebar h3 { color: var(--accent); display: flex; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-    .favorite-item {
-      display: flex; gap: 10px; padding: 10px; border-radius: 10px;
-      background: rgba(0, 255, 136, 0.05); border: 1px solid var(--border-color);
-      margin-bottom: 10px; cursor: pointer; transition: 0.3s;
-    }
-    .favorite-item:hover { background: rgba(0, 255, 136, 0.1); transform: translateX(5px); }
-    .favorite-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-    .favorite-item-info h5 { color: var(--text-primary); }
-    .favorite-item-info p { font-size: 12px; color: var(--text-secondary); }
-    .remove-favorite { color: #ff4444; background: none; border: none; cursor: pointer; font-size: 18px; }
-
-    /* notification */
-    .notification {
-      position: fixed; top: 20px; right: 20px; padding: 15px 25px;
-      background: var(--accent); color: #0a0a1a; border-radius: 10px;
-      font-weight: 600; z-index: 2000; box-shadow: 0 5px 20px var(--accent-glow);
-    }
-
-    @media (max-width: 1024px) { .content-wrapper { flex-direction: column; } .favorites-sidebar { width: 100%; position: static; } }
-    @media (max-width: 768px) { .featured-course { flex-direction: column; } .course-thumbnail { width: 100%; } }
-  </style>
 </head>
-<body class="light-theme"> <!-- default will be light, but we set via JS to dark as preferred? We'll control with toggle. Actually let's start with dark (original) but apply class="dark-theme"? We'll use light-theme as fallback; better set by JS -->
+<body>
   <div class="scientific-bg">
     <div class="particles"></div>
     <div class="grid-overlay"></div>
   </div>
 
   <div class="main-container">
-    <!-- Header with Search and THEME SWITCH -->
+    <!-- Header with Search -->
     <header class="header">
       <div class="logo">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -409,19 +24,16 @@
         </svg>
         <span>LaAcademy</span>
       </div>
-
-      <!-- theme toggle integrated -->
-      <button class="theme-switch" id="themeToggle" aria-label="Switch theme">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 3v1m0 16v1M5 5l1 1m12 12 1 1M3 12h1m16 0h1M5 19l1-1M18 6l1-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-        <span>🌓</span>
-      </button>
       
       <div class="search-container">
         <form id="searchForm" class="search-form">
-          <input type="text" id="searchInput" class="search-input" placeholder="Search courses, videos, or topics..." aria-label="Search input" />
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search courses, videos, or topics..."
+            aria-label="Search input"
+          />
           <button type="submit" class="search-button" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <circle cx="11" cy="11" r="8" />
@@ -445,7 +57,9 @@
     </header>
 
     <div class="content-wrapper">
+      <!-- Main Content Area -->
       <main class="main-content">
+        <!-- Featured Course Section -->
         <section class="featured-section">
           <h2 class="section-title">Featured Course</h2>
           <div class="featured-course">
@@ -470,12 +84,16 @@
           </div>
         </section>
 
+        <!-- Video Grid -->
         <section class="videos-section">
           <h2 class="section-title">Learning Videos</h2>
-          <div class="video-grid" id="videoGrid"></div>
+          <div class="video-grid" id="videoGrid">
+            <!-- Videos will be loaded dynamically -->
+          </div>
         </section>
       </main>
 
+      <!-- Favorites Sidebar -->
       <aside class="favorites-sidebar">
         <h3>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -483,238 +101,15 @@
           </svg>
           Favorites
         </h3>
-        <div id="favoritesList" class="favorites-list"></div>
+        <div id="favoritesList" class="favorites-list">
+          <!-- Favorites will be loaded here -->
+        </div>
       </aside>
     </div>
   </div>
 
-  <!-- Firebase SDK (compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-  <script>
-    // -------------------- FIREBASE CONFIG (replace with your own) --------------------
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      databaseURL: "YOUR_DATABASE_URL",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // -------------------- THEME SWITCH (light <-> dark) --------------------
-    const themeToggle = document.getElementById('themeToggle');
-    // Default to dark (original). Check localStorage
-    const savedTheme = localStorage.getItem('laacademy-theme') || 'dark'; 
-    document.body.className = savedTheme === 'light' ? 'light-theme' : ''; // empty = dark (since dark is default in root)
-    if (savedTheme === 'light') document.body.classList.add('light-theme');
-
-    themeToggle.addEventListener('click', () => {
-      if (document.body.classList.contains('light-theme')) {
-        document.body.classList.remove('light-theme');
-        localStorage.setItem('laacademy-theme', 'dark');
-      } else {
-        document.body.classList.add('light-theme');
-        localStorage.setItem('laacademy-theme', 'light');
-      }
-      // tiny animation (optional) re-render nothing else needed
-    });
-
-    // -------------------- APP STATE --------------------
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    const videoGrid = document.getElementById('videoGrid');
-    const favoritesList = document.getElementById('favoritesList');
-    const searchForm = document.getElementById('searchForm');
-
-    let currentUser = "user123"; // demo user
-    let allVideos = [];
-
-    // Load videos from Firebase
-    function loadVideos() {
-      database.ref('videos').on('value', (snapshot) => {
-        const videos = snapshot.val();
-        if (videos) {
-          allVideos = Object.keys(videos).map(key => ({ id: key, ...videos[key] }));
-          renderVideos(allVideos);
-        } else {
-          videoGrid.innerHTML = '<p>No videos found. Add sample data.</p>';
-        }
-      });
-    }
-
-    function renderVideos(videos) {
-      videoGrid.innerHTML = videos.map(video => `
-        <div class="video-card" data-id="${video.id}">
-          <div class="video-thumbnail">
-            <img src="${video.thumbnail || 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400'}" alt="${video.title}">
-            <div class="video-overlay">
-              <svg width="40" height="40" viewBox="0 0 40 40">
-                <circle cx="20" cy="20" r="18" stroke="var(--accent)" stroke-width="2" fill="none"/>
-                <polygon points="15,12 30,20 15,28" fill="var(--accent)"/>
-              </svg>
-            </div>
-            <span class="video-duration">${video.duration || '10:30'}</span>
-          </div>
-          <button class="favorite-btn" onclick="toggleFavorite('${video.id}')" data-id="${video.id}">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z"/>
-            </svg>
-          </button>
-          <div class="video-info">
-            <h4>${video.title}</h4>
-            <div class="video-meta">
-              <span>${video.views || 0} views</span>
-              <span>${video.category || 'General'}</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-      updateFavoriteButtons();
-    }
-
-    // Toggle favorite (exposed globally)
-    window.toggleFavorite = function(videoId) {
-      const video = allVideos.find(v => v.id === videoId);
-      if (!video) return;
-      const favRef = database.ref(`favorites/${currentUser}/${videoId}`);
-      favRef.once('value', (snap) => {
-        if (snap.exists()) {
-          favRef.remove();
-          showNotification('Removed from favorites', 'info');
-        } else {
-          favRef.set({ id: videoId, title: video.title, thumbnail: video.thumbnail, addedAt: Date.now() });
-          showNotification('Added to favorites!', 'success');
-        }
-        updateFavoriteButtons();
-        loadFavorites();
-      });
-    };
-
-    function updateFavoriteButtons() {
-      database.ref(`favorites/${currentUser}`).once('value', (snap) => {
-        const favs = snap.val() || {};
-        document.querySelectorAll('.favorite-btn').forEach(btn => {
-          const vid = btn.dataset.id;
-          btn.classList.toggle('active', !!favs[vid]);
-        });
-      });
-    }
-
-    function loadFavorites() {
-      database.ref(`favorites/${currentUser}`).on('value', (snap) => {
-        const favs = snap.val();
-        if (favs) {
-          const items = Object.keys(favs).map(k => favs[k]);
-          renderFavorites(items);
-        } else {
-          favoritesList.innerHTML = '<div class="empty-favorites">No favorites yet</div>';
-        }
-      });
-    }
-
-    function renderFavorites(favs) {
-      if (!favs.length) {
-        favoritesList.innerHTML = '<div class="empty-favorites">No favorites yet</div>';
-        return;
-      }
-      favoritesList.innerHTML = favs.map(f => `
-        <div class="favorite-item" onclick="playVideo('${f.id}')">
-          <img src="${f.thumbnail || 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=100'}" alt="${f.title}">
-          <div class="favorite-item-info">
-            <h5>${f.title}</h5>
-            <p>Added ${new Date(f.addedAt).toLocaleDateString()}</p>
-          </div>
-          <button class="remove-favorite" onclick="event.stopPropagation(); toggleFavorite('${f.id}')">×</button>
-        </div>
-      `).join('');
-    }
-
-    window.playVideo = function(videoId) {
-      const video = allVideos.find(v => v.id === videoId);
-      if (video) {
-        database.ref(`videos/${videoId}/views`).transaction(v => (v || 0) + 1);
-        alert(`Now playing: ${video.title}\n(video player simulation)`);
-      }
-    };
-
-    // Search realtime
-    searchInput.addEventListener('input', () => {
-      const q = searchInput.value.trim().toLowerCase();
-      if (!q) { searchResults.classList.remove('show'); return; }
-      database.ref('videos').orderByChild('title').startAt(q).endAt(q + '\uf8ff').once('value', (snap) => {
-        const vals = snap.val();
-        let results = [];
-        if (vals) results = Object.keys(vals).map(k => ({ id: k, ...vals[k] }));
-        searchResults.innerHTML = '';
-        if (results.length) {
-          results.slice(0,5).forEach(v => {
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>${highlight(v.title, q)}</strong><br><small>${highlight(v.category || '', q)}</small>`;
-            li.onclick = () => playVideo(v.id);
-            searchResults.appendChild(li);
-          });
-          searchResults.classList.add('show');
-        } else {
-          searchResults.innerHTML = '<li style="color:gray;">No results</li>';
-          searchResults.classList.add('show');
-        }
-      });
-    });
-
-    function highlight(text, query) {
-      if (!text) return '';
-      const reg = new RegExp(`(${query})`, 'gi');
-      return text.replace(reg, '<span class="highlight">$1</span>');
-    }
-
-    searchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const q = searchInput.value.trim();
-      if (!q) return;
-      database.ref('videos').orderByChild('title').startAt(q).endAt(q + '\uf8ff').once('value', (snap) => {
-        const vals = snap.val();
-        if (vals) {
-          const filtered = Object.keys(vals).map(k => ({ id: k, ...vals[k] }));
-          renderVideos(filtered);
-          searchResults.classList.remove('show');
-        } else {
-          renderVideos([]);
-        }
-      });
-    });
-
-    function showNotification(msg, type) {
-      const notif = document.createElement('div');
-      notif.className = 'notification';
-      notif.textContent = msg;
-      document.body.appendChild(notif);
-      setTimeout(() => notif.remove(), 2500);
-    }
-
-    // Seed sample videos if none
-    function seedSampleData() {
-      database.ref('videos').once('value', (snap) => {
-        if (!snap.exists()) {
-          const samples = [
-            { title: "Introduction to Quantum Computing", category: "Physics", thumbnail: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400", duration: "15:30", views: 1234 },
-            { title: "Advanced JavaScript Patterns", category: "Programming", thumbnail: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400", duration: "22:15", views: 2345 },
-            { title: "Machine Learning Fundamentals", category: "AI", thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400", duration: "18:45", views: 3456 },
-            { title: "Neural Networks Explained", category: "AI", thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400", duration: "25:20", views: 4567 }
-          ];
-          samples.forEach(v => database.ref('videos').push(v));
-        }
-      });
-    }
-
-    // Initialize
-    seedSampleData();
-    loadVideos();
-    loadFavorites();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
